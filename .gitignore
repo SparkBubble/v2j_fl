@@ -3,3 +3,6 @@ output/
 java_prjs/
 generator/
 __pycache__/
+!java_tools/
+*.v
+*.java
