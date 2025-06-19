@@ -2,3 +2,4 @@
 output/
 java_prjs/
 generator/
+__pycache__/
