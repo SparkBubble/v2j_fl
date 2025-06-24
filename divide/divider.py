@@ -20,7 +20,7 @@ class VerilogParser:
         self.module_name = ''
         self.assignments:list[tuple[wire, int, int, str]] = []
         self.variables:list[wire] = []
-        self.variables_divt:dict[str, wire] = {}
+        self.variables_dict:dict[str, wire] = {}
         self._preprocess()
         self._parse_module()
         self._parse_body()
@@ -65,7 +65,7 @@ class VerilogParser:
             else:
                 self.output_ports.append((name, lb, rb))
             portvar = wire(name, lb, rb)
-            self.variables_divt[name] = portvar
+            self.variables_dict[name] = portvar
             
         
     def _parse_module(self):
@@ -86,7 +86,7 @@ class VerilogParser:
 
             wirevar = wire(name, lb, rb)
             self.variables.append(wirevar)
-            self.variables_divt[name] = wirevar
+            self.variables_dict[name] = wirevar
             if expr :
                 self.assignments.append((wirevar, lb, rb, expr))
 
@@ -94,10 +94,10 @@ class VerilogParser:
         assign_pattern = r'assign(.*?)=(.*?);'
         for ls, expr in re.findall(assign_pattern, self.body, re.DOTALL):
             name, lb, rb = self._parse_var(ls.strip())
-            if not name or (name not in self.variables_divt):
+            if not name or (name not in self.variables_dict):
                 raise ValueError("Undefined variable '{}' in assignment statement.".format(name))
             
-            var = self.variables_divt[name]
+            var = self.variables_dict[name]
 
             if not lb:
                 lb, rb = var.highBit, var.lowBit
@@ -117,7 +117,7 @@ class VerilogParser:
         for var, lb, rb, expr in self.assignments:
             match = re.findall(r'\b(\w+)\b', expr)
             for dep_var in match:
-                if dep_var in self.variables_divt:
+                if dep_var in self.variables_dict:
                     graph[dep_var].append(var.name)
                     in_degree[var.name] += 1
         
