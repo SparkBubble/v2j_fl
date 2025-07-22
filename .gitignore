@@ -7,3 +7,4 @@ __pycache__/
 !java_tools/
 *.v
 *.java
+*.log

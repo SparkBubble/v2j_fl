@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 
-from verilog_lex import tokens # do not ignore this line or delete it
+from divide.verilog_lex import tokens # do not ignore this line or delete it
 
 var_name = ''
 name_count = 0

@@ -42,7 +42,7 @@ def p_ternary(p):
     code.extend(p[1]['code'])
     code.extend(p[3]['code'])
     code.extend(p[5]['code'])
-    name = f'{var_name}_{name_count}'
+    name = f'{var_name}__{name_count}'
     name_count += 1
     code.append(f'wire {name};')
     code.append(f'if({p[1]["name"]}.notZero())')
@@ -63,7 +63,7 @@ def p_logic_op(p):
     code = []
     code.extend(p[1]['code'])
     code.extend(p[3]['code'])
-    name = f'{var_name}_{name_count}'
+    name = f'{var_name}__{name_count}'
     name_count += 1
     if p[2] == '&&':
         code.append(f'wire {name} = {p[1]["name"]}.logicalAnd({p[3]["name"]});')
@@ -83,7 +83,7 @@ def p_bit_op(p):
     code = []
     code.extend(p[1]['code'])
     code.extend(p[3]['code'])
-    name = f'{var_name}_{name_count}'
+    name = f'{var_name}__{name_count}'
     name_count += 1
     if p[2] == '&':
         code.append(f'wire {name} = {p[1]["name"]}.bitAnd({p[3]["name"]});')
@@ -108,7 +108,7 @@ def p_relational_op(p):
     code = []
     code.extend(p[1]['code'])
     code.extend(p[3]['code'])
-    name = f'{var_name}_{name_count}'
+    name = f'{var_name}__{name_count}'
     name_count += 1
     if p[2] == '<':
         code.append(f'wire {name} = {p[1]["name"]}.lessThan({p[3]["name"]});')
@@ -135,7 +135,7 @@ def p_shift_op(p):
     code = []
     code.extend(p[1]['code'])
     code.extend(p[3]['code'])
-    name = f'{var_name}_{name_count}'
+    name = f'{var_name}__{name_count}'
     name_count += 1
     if p[2] == '<<':
         code.append(f'wire {name} = {p[1]["name"]}.shiftLeft({p[3]["name"]});')
@@ -155,7 +155,7 @@ def p_arithmetic_op(p):
     code = []
     code.extend(p[1]['code'])
     code.extend(p[3]['code'])
-    name = f'{var_name}_{name_count}'
+    name = f'{var_name}__{name_count}'
     name_count += 1
     if p[2] == '+':
         code.append(f'wire {name} = {p[1]["name"]}.add({p[3]["name"]});')
@@ -179,7 +179,7 @@ def p_unary_op(p):
     global var_name, name_count
     code = []
     code.extend(p[2]['code'])
-    name = f'{var_name}_{name_count}'
+    name = f'{var_name}__{name_count}'
     name_count += 1
     if p[1] == '!':
         code.append(f'wire {name} = {p[2]["name"]}.logicalNot();')
@@ -202,7 +202,7 @@ def p_bits_select(p):
     global var_name, name_count
     code = []
     code.extend(p[1]['code'])
-    name = f'{var_name}_{name_count}'
+    name = f'{var_name}__{name_count}'
     name_count += 1
     code.append(f'wire {name} = {p[1]["name"]}.getBits({p[3][1]}, {p[5][1]});')
     p[0] = {
@@ -215,7 +215,7 @@ def p_bit_select(p):
     global var_name, name_count
     code = []
     code.extend(p[1]['code'])
-    name = f'{var_name}_{name_count}'
+    name = f'{var_name}__{name_count}'
     name_count += 1
     code.append(f'wire {name} = {p[1]["name"]}.getBit({p[3][1]});')
     p[0] = {
@@ -229,7 +229,7 @@ def p_concat(p):
     global var_name, name_count
     code = []
     code.extend(p[2]['code'])
-    name = f'{var_name}_{name_count}'
+    name = f'{var_name}__{name_count}'
     name_count += 1
     code.append(f'wire {name} = wire.concat({p[2]["name"]});')
     p[0] = {
@@ -262,7 +262,7 @@ def p_expr_ID(p):
 def p_expr_num(p):
     'expr : num'
     global var_name, name_count
-    name = f'{var_name}_{name_count}'
+    name = f'{var_name}__{name_count}'
     name_count += 1
     p[0] = {
         'name': name,

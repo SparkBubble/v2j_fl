@@ -24,6 +24,7 @@ def dist_factor(x, d, zero=5 , e=2):
 
 for i in [2, 5, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20]:
     dir = f"ljq_wrongcode/output/fadd32_{i}"
+
     parser = VerilogParser(f"{dir}/fadd32_{i}.v")
     wrong_var = wrong_vars[i]
     locate_var_file = f"{dir}/wrong_var_names.txt"

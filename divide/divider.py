@@ -2,7 +2,7 @@ import re
 from collections import defaultdict, deque
 from jinja2 import Template
 
-from vdiv_yacc import parser
+from divide.vdiv_yacc import parser
 
 class wire:
     def __init__(self, name, lb, rb):
@@ -201,18 +201,18 @@ class VerilogDivider:
                 print(f'Error in assignment statement: {expr}')
                 raise e
 
-    def output(self, dir_path:str, package_name:str='module'):
+    def output(self, path:str, package_name:str='module'):
         """
         将 Verilog 代码拆分
 
         Parameters
         ----------
-            dir_path : 输出目录
+            path : 输出目录
             package_name : 包名
         """
         if len(self.new_assignments) == 0:
             self._translate_assignment()
-        with open(f'{dir_path}/{self.parser.module_name}.v', 'w', encoding='utf-8') as f:
+        with open(f'{path}', 'w', encoding='utf-8') as f:
             template = '''module {{module_name}}(
     // inputs{% for port in ports.input %}
     input  [{{ port.highBit }}:{{ port.lowBit }}] {{ port.name }}{% if not loop.last %}, {% endif %}{% endfor %}

@@ -5,16 +5,16 @@
 
 
 # * 以下参数需要根据实际情况修改
-verilog_file_path = 'ljq_wrongcode/wrong_code/fadd32_2.v'  # 输入Verilog文件路径
+verilog_file_path = 'test_dir/wrong_code/fadd32_14_nobranch.v'  # 输入Verilog文件路径
 
 verilog_io_path = 'generator/testdata/fadd32.io10000'  # 输入Verilog IO文件路径
 ports_resort = [1, 2, 0, 3, 4] # 模块上数第 i 个端口位于IO文件第左数 p[i] 列
-samp_rate = 0.02  # IO测试采样率（0~1之间，数值越大越准确，但是测试时间与其成正比）
+samp_rate = 0.04  # IO测试采样率（0~1之间，数值越大越准确，但是测试时间与其成正比）
 
 max_ranking = 10  # 输出排名最高的 max_ranking 个变量
 
-java_project_parentDir = 'ljq_wrongcode/prjs'  # 生成的Java项目放到哪个目录下
-output_dir = 'ljq_wrongcode/output'  # 输出放到哪个目录下
+java_project_parentDir = 'test_dir/prjs'  # 生成的Java项目放到哪个目录下
+output_dir = 'test_dir/output'  # 输出放到哪个目录下
 
 # ? 以下参数一般无需修改
 
@@ -95,7 +95,7 @@ def generate_result(project_path:str):
     verilog_ranking = []
     wrong_var_names = []
     pattern = re.compile(r'module\$(\w+)#(\w+)\(\):(\d+);(\d+\.\d+)')
-    for line in ranking_lines[:max_ranking]:
+    for line in ranking_lines[:max_ranking+1]:
         match = pattern.match(line)
         if match:
             class_name, func_name, line_num, score = match.groups()
