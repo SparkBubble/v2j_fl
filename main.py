@@ -13,17 +13,15 @@ samp_rate = 0.02  # IO测试采样率（0~1之间，数值越大越准确，但�
 
 max_ranking = 10  # 输出排名最高的 max_ranking 个变量
 
-
-# ? 以下参数一般无需修改
 java_project_parentDir = 'ljq_wrongcode/prjs'  # 生成的Java项目放到哪个目录下
 output_dir = 'ljq_wrongcode/output'  # 输出放到哪个目录下
+
+# ? 以下参数一般无需修改
 
 java_tools_dir = 'java_tools'  # 生成工具目录
 java_package_name =  'module'  # Java包名
 
 parser_detail = True  # 是否使用详细语法分析器
-
-
 
 
 
@@ -41,7 +39,7 @@ def generate_project(project_name:str):
     pwd = os.getcwd()
     os.chdir(java_project_parentDir)
     if os.path.exists(project_name):
-        print(f'项目 {project_name} 于 {os.path.join(java_project_parentDir, project_name)} 已存在，也许您需要先删除它.')
+        print(f'项目 {project_name} 于 {os.path.join(java_project_parentDir, project_name)} 已存在，也许您想要先删除它.')
         # 询问是否删除
         while True:
             choice = input('是否删除它? ([y]/n) ')
@@ -95,6 +93,7 @@ def generate_result(project_path:str):
             f.writelines(java_lines)
             
     verilog_ranking = []
+    wrong_var_names = []
     pattern = re.compile(r'module\$(\w+)#(\w+)\(\):(\d+);(\d+\.\d+)')
     for line in ranking_lines[:max_ranking]:
         match = pattern.match(line)
@@ -110,6 +109,7 @@ def generate_result(project_path:str):
                 j -= 1
 
             var_name = java_lines[i].strip().split('.')[0]
+            wrong_var_names.append(var_name)
             verilog_ranking.append(f'module: {class_name}\n')
             verilog_ranking.append(f'    var: {var_name}\n')
             verilog_ranking.append(f'    line: {line_num+1}\n')
@@ -120,6 +120,8 @@ def generate_result(project_path:str):
             verilog_ranking.append(f'------------\n\n')
     with open(os.path.join(output_dir, project_name, f'verilog_ranking.txt'), 'w', encoding='utf-8') as f:
         f.writelines(verilog_ranking)
+    with open(os.path.join(output_dir, project_name, f'wrong_var_names.txt'), 'w', encoding='utf-8') as f:
+        f.writelines([f'{name}\n' for name in wrong_var_names])
 
 
 

@@ -1,6 +1,7 @@
 .vscode/
 output/
 java_prjs/
+prjs/
 generator/
 __pycache__/
 !java_tools/
