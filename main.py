@@ -5,11 +5,11 @@
 
 
 # * 以下参数需要根据实际情况修改
-verilog_file_path = 'test_dir/wrong_code/fadd32_14_nobranch.v'  # 输入Verilog文件路径
+verilog_file_path = 'test_dir/wrong_code/fadd32_3_nobranch.v'  # 输入Verilog文件路径
 
 verilog_io_path = 'generator/testdata/fadd32.io10000'  # 输入Verilog IO文件路径
 ports_resort = [1, 2, 0, 3, 4] # 模块上数第 i 个端口位于IO文件第左数 p[i] 列
-samp_rate = 0.04  # IO测试采样率（0~1之间，数值越大越准确，但是测试时间与其成正比）
+samp_rate = 0.1  # IO测试采样率（0~1之间，数值越大越准确，但是测试时间与其成正比）
 
 max_ranking = 10  # 输出排名最高的 max_ranking 个变量
 
@@ -61,7 +61,6 @@ def generate_project(project_name:str):
     print('------------------------------------------------')
     print(f'Maven 项目 {project_name} 创建完毕。\n\n')
     os.chdir(pwd)
-    return os.path.join(java_project_parentDir, project_name)
 
 
 
@@ -132,18 +131,12 @@ if __name__ == '__main__':
     if args and len(args) > 1 :
         output_dir = args[1]
 
-    # 载入Verilog文件
-    print(f'载入Verilog文件 ———— {verilog_file_path}')
-    if parser_detail:
-        converter = V2JDtl(verilog_file_path)
-    else:
-        converter = V2JStd(verilog_file_path)
-    print(f'解析Verilog文件 ———— {verilog_file_path}\n')
-    # converter.parser_log('parser.log')
 
     # 生成项目
     project_name = os.path.basename(verilog_file_path).split('.')[0]
-    project_path = generate_project(project_name)
+    project_path = os.path.join(java_project_parentDir, project_name)
+
+    generate_project(project_name)
     
     # 删除原有文件
     try:
@@ -152,6 +145,15 @@ if __name__ == '__main__':
         os.remove(os.path.join(project_path, 'src', 'main', 'java', java_package_name, 'App.java'))
     except:
         pass
+
+    # 载入Verilog文件
+    print(f'载入Verilog文件 ———— {verilog_file_path}')
+    if parser_detail:
+        converter = V2JDtl(verilog_file_path)
+    else:
+        converter = V2JStd(verilog_file_path)
+    print(f'解析Verilog文件 ———— {verilog_file_path}\n')
+    # converter.parser_log('parser.log')
 
     # 生成模块和单元测试
     print(f'生成模块Java代码...')
